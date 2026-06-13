@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especificación de Desarrollo: Mini Chess</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Mini Chess</h1>
+        <p style="color: var(--text-muted);">Guía de Especificación Técnica para Mini Chess (HTML5/JS)</p>
+    </header>
+
+    <nav class="nav-links">
+        <a href="index.html">Ir al Juego Principal</a> |
+        <a href="tablero-3x3.html">Ver Tablero 3x3</a> |
+        <a href="piezas-ajedrez.html">Ver Piezas Blancas</a> |
+        <a href="desafios-aleatorios.html">Ver Desafíos Aleatorios</a>
+    </nav>
+
+    <section class="card">
+        <h2>1. Arquitectura y Modelo del Tablero</h2>
+        <p>El juego se desarrolla sobre un tablero compacto de $3 \times 3$ casillas. Para un desarrollo eficiente en JavaScript, el tablero se representa mediante un arreglo unidimensional de 9 elementos:</p>
+        
+        <div class="grid-3x3">
+            <div class="cell light-cell">0 (L)</div>
+            <div class="cell dark-cell">1 (D)</div>
+            <div class="cell light-cell">2 (L)</div>
+            <div class="cell dark-cell">3 (D)</div>
+            <div class="cell light-cell">4 (L)</div>
+            <div class="cell dark-cell">5 (D)</div>
+            <div class="cell light-cell">6 (L)</div>
+            <div class="cell dark-cell">7 (D)</div>
+            <div class="cell light-cell">8 (L)</div>
+        </div>
+
+        <p><strong>Claves de inicialización del tablero:</strong></p>
+        <ul>
+            <li><strong>Índice 4:</strong> Casilla central (marcada con restricción crítica para el Caballo).</li>
+            <li><strong>Distribución cromática:</strong> Las casillas con índices impares <code>[1, 3, 5, 7 y 9]</code> son oscuras (D). Las casillas con índices pares <code></code> son claras (L). El Alfil opera exclusivamente sobre casillas oscuras.</li>
+        </ul>
+        <div class="note">
+            <strong>Fórmula de Densidad Espacial:</strong> El juego cuenta con 5 piezas en 9 casillas. La densidad espacial es constante de:
+            $$\text{Densidad} = \frac{5}{9} \approx 55.56\%$$
+            Esto significa que en todo momento solo habrá 4 casillas desocupadas, lo que limita la libertad de movimiento de las piezas de largo alcance y bloquea trayectorias. No existen capturas; las piezas solo se mueven a casillas vacías (valor <code>null</code>).
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>2. Lógica de Movimiento de las Piezas</h2>
+        <p>Para cada pieza, se debe programar una función validadora de movimientos legales basada en el estado actual del arreglo <code>board</code>:</p>
+
+        <h3>Rey (<code>K</code>)</h3>
+        <p>Se desplaza 1 casilla en cualquier dirección. En coordenadas bidimensionales $(x, y)$:</p>
+        <pre><code>const dx = Math.abs(targetX - currentX);
+const dy = Math.abs(targetY - currentY);
+const esValido = (dx <= 1 && dy <= 1) && board[targetIndex] === null;</code></pre>
+
+        <h3>Dama (<code>Q</code>), Torre (<code>R</code>) y Alfil (<code>B</code>)</h3>
+        <p>Se desplazan en línea recta (ortogonal o diagonal). Es obligatorio verificar que el camino intermedio esté libre (colisiones con otras piezas):</p>
+        <pre><code>// Pseudocódigo para validación de camino libre en línea recta/diagonal
+function checkPathClear(current, target) {
+    const stepX = Math.sign(targetX - currentX);
+    const stepY = Math.sign(targetY - currentY);
+    let tempX = currentX + stepX;
+    let tempY = currentY + stepY;
+    
+    while (tempX!== targetX || tempY!== targetY) {
+        if (board!== null) return false; // Obstáculo detectado
+        tempX += stepX;
+        tempY += stepY;
+    }
+    return board[target] === null;
+}</code></pre>
+        <p><em>Restricción del Alfil:</em> Solo puede iniciar y terminar en casillas oscuras (índices impares 1, 3, 5, 7 y 9).</p>
+        <p><em>Restricción del Alfil:</em> Solo puede iniciar y terminar en casillas claras (índices pares 0, 2, 4, 6 y 8).</p>
+        <h3>Caballo (<code>N</code>) <span class="badge badge-danger">Restricción Especial</span></h3>
+        <p>Se mueve en "L". Puede saltar sobre otras piezas. <strong>Regla reglamentaria crucial:</strong> El caballo jamás puede terminar su movimiento en la casilla central (índice 4):</p>
+        <pre><code>function esMovimientoValidoCaballo(current, target) {
+    if (target === 4) return false; // Prohibido aterrizar en el centro del tablero
+    
+    const dx = Math.abs(targetX - currentX);
+    const dy = Math.abs(targetY - currentY);
+    const esFormaDeL = (dx === 1 && dy === 2) || (dx === 2 && dy === 1);
+    
+    return esFormaDeL && board[target] === null;
+}</code></pre>
+    </section>
+
+    <section class="card">
+        <h2>3. Algoritmo de Niveles y Transformaciones (Matriz 3x3)</h2>
+        <p>El juego cuenta con tres niveles de dificultad que modifican la interpretación de la "tarjeta de desafío" objetivo en relación al tablero físico:</p>
+
+        <h3>Nivel 1: Coincidencia Directa</h3>
+        <p>El estado del tablero debe coincidir exactamente con el de la tarjeta de tarea (orientación estática).</p>
+
+        <h3>Nivel 2: Rotaciones de Tarjeta</h3>
+        <p>El jugador puede rotar la tarjeta de tarea durante la fase de análisis. Cada rotación tiene un costo en movimientos que se suma al contador total del jugador:</p>
+        <ul>
+            <li>Girar tarjeta $90^{\circ}$ (horario o antihorario) = <strong>+1 movimiento</strong> de penalización.</li>
+            <li>Girar tarjeta $180^{\circ}$ = <strong>+2 movimientos</strong> de penalización.</li>
+        </ul>
+
+        <h3>Nivel 3: Reflexión Especular (Espejo)</h3>
+        <p>El jugador puede voltear la tarjeta en espejo (reverso de la tarjeta):</p>
+        <ul>
+            <li>Voltear tarjeta en espejo = <strong>+1 movimiento</strong> de penalización.</li>
+        </ul>
+
+        <h3>Mapeo de Índices en JavaScript para Transformaciones:</h3>
+        <p>Para comprobar si el tablero físico del jugador coincide con la tarjeta en alguna de sus variantes (rotada o espejada), aplica los siguientes arreglos de traducción sobre el estado del tablero o de la tarjeta:</p>
+        <pre><code>// Índices originales del tablero: 
+
+const transformaciones = {
+    // Rotaciones (Nivel 2)
+    rotar90Horario:      , // Costo: +1
+    rotar180:            , // Costo: +2
+    rotar270Horario:     , // Costo: +1
+
+    // Espejos (Nivel 3)
+    espejoHorizontal:    , // Costo: +1
+    espejoVertical:      , // Costo: +1
+
+    // Combinación de Espejo + Rotaciones (Costo acumulativo)
+    espejoYRotar90:      , // Costo: +2 (1 por espejo + 1 por giro)
+    espejoYRotar270:       // Costo: +2 (1 por espejo + 1 por giro)
+};
+
+// Función para aplicar transformación sobre un estado de tablero
+function aplicarTransformacion(tableroOriginal, indicesMapeo) {
+    return indicesMapeo.map(idx => tableroOriginal[idx]);
+}</code></pre>
+    </section>
+
+    <section class="card">
+        <h2>4. Estructura de Datos Propuesta (JSON de Desafíos)</h2>
+        <p>Estructura JSON recomendada para almacenar los 60 retos de la base de datos de tu aplicación web:</p>
+        <pre><code>{
+  "retos":,
+      "posicionObjetivo":,
+      "movimientosOptimosSugeridos": 5
+    },
+    {
+      "id": 2,
+      "dificultad": "media",
+      "posicionInicial":,
+      "posicionObjetivo":,
+      "movimientosOptimosSugeridos": 7
+    }
+  ]
+}</code></pre>
+    </section>
+
+    <section class="card">
+        <h2>5. Flujo del Bucle de Juego (Mecánica de Subasta y Tiempo Real)</h2>
+        <ol>
+            <li><strong>Preparación de Ronda:</strong> Se inicializa la escena. El servidor o cliente extrae una tarjeta de desafío que se muestra físicamente en pantalla. Las piezas se colocan en sus coordenadas de inicio.</li>
+            <li><strong>Fase de Análisis:</strong> Los jugadores analizan visualmente el tablero y calculan mentalmente la ruta más corta. Las piezas en la pantalla están bloqueadas (no se pueden arrastrar/mover).</li>
+            <li><strong>Fase de Subasta (Bidding):</strong>
+                <ul>
+                    <li>El primer jugador que pulse el botón "Declarar" introduce un número de movimientos previstos (ej. 6).</li>
+                    <li>Inmediatamente se activa un temporizador en cuenta regresiva (reloj de arena virtual de 30 segundos).</li>
+                    <li>El oponente puede usar este tiempo para presionar "Contraofertar" con un número menor (ej. 5).</li>
+                </ul>
+            </li>
+            <li><strong>Fase de Ejecución:</strong> El jugador con la oferta más baja toma el control del tablero. Las piezas se desbloquean para poder ser movidas mediante Drag and Drop:
+                <ul>
+                    <li>El jugador debe alcanzar la posición objetivo (o una de sus equivalencias transformadas permitidas por su nivel de dificultad) en la cantidad de movimientos declarada o menos.</li>
+                    <li>Si lo logra: <strong>+1 punto</strong>.</li>
+                    <li>Si falla, se queda sin movimientos, o expira su tiempo de ejecución: el oponente recibe el punto.</li>
+                </ul>
+            </li>
+            <li><strong>Siguiente Ronda:</strong> El tablero no se reinicia. El estado final de la ronda anterior sirve como punto de partida para el siguiente desafío. El primero en llegar a 6 puntos gana la partida.</li>
+        </ol>
+    </section>
+
+    <section class="card">
+        <h2>6. Recomendaciones para Programar la Inteligencia Artificial (Solver BFS)</h2>
+        <p>Dado que el espacio de estados es extremadamente pequeño (9 posiciones para 5 piezas distintas, lo que equivale a sólo $9 \times 8 \times 7 \times 6 \times 5 = 15,120$ posibles configuraciones lógicas), puedes programar fácilmente un solucionador en JavaScript usando el algoritmo de <strong>Búsqueda en Anchura (BFS)</strong> para encontrar la solución óptima absoluta en tiempo real:</p>
+        <pre><code>function buscarCaminoMasCorto(estadoInicial, estadoObjetivo, nivel) {
+    let cola = [[estadoInicial, 0]]; // [tablero, costo_movimientos]
+    let visitados = new Set();
+    visitados.add(estadoInicial.toString());
+
+    while (cola.length > 0) {
+        let [estadoActual, pasos] = cola.shift();
+
+        // 1. Verificar si coincide con el objetivo en base al Nivel
+        if (verificarCoincidenciaConNivel(estadoActual, estadoObjetivo, nivel, pasos)) {
+            return pasos; // Retorna el menor número de movimientos necesarios
+        }
+
+        // 2. Generar todos los movimientos legales posibles a partir del estado actual
+        let movimientosSiguientes = obtenerTodosLosMovimientosLegales(estadoActual);
+        for (let proximoEstado of movimientosSiguientes) {
+            let hash = proximoEstado.toString();
+            if (!visitados.has(hash)) {
+                visitados.add(hash);
+                cola.push([proximoEstado, pasos + 1]);
+            }
+        }
+    }
+    return -1; // No hay solución
+}</code></pre>
+    </section>
+</div>
+
+</body>
+</html>

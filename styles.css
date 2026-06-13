@@ -1,0 +1,358 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b; /* Color oscuro para casillas oscuras y texto oscuro */
+    --accent-color: #38bdf8;
+    --text-color: #f1f5f9; /* Color claro para casillas claras y texto claro */
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --code-bg: #0b0f19;
+    --success: #10b981;
+    --warning: #f59e0b;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 2rem; /* Default padding for body, can be overridden */
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+h1 {
+    color: var(--accent-color);
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+}
+
+h2 {
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+}
+
+h3 {
+    color: var(--text-color);
+    margin-top: 1.5rem;
+}
+
+p, li {
+    color: var(--text-color);
+}
+
+code {
+    font-family: "Courier New", Courier, monospace;
+    background-color: var(--code-bg);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    color: #f472b6;
+    font-size: 0.9em;
+}
+
+pre {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    padding: 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+pre code {
+    color: #38bdf8;
+    background: none;
+    padding: 0;
+}
+
+.grid-3x3 {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-gap: 5px;
+    margin: 1.5rem auto;
+    justify-content: center;
+}
+
+.cell {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.dark-cell {
+    background-color: var(--card-bg); /* Oscuro: #1e293b */
+    color: var(--text-color); /* Texto claro para contraste */
+}
+
+.light-cell {
+    background-color: var(--text-color); /* Claro: #f1f5f9 */
+    color: var(--card-bg); /* Texto oscuro para contraste */
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 50px;
+    text-transform: uppercase;
+}
+
+.badge-danger { background-color: #ef4444; color: white; }
+.badge-warning { background-color: #f59e0b; color: white; }
+.badge-info { background-color: #3b82f6; color: white; }
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.note {
+    border-left: 4px solid var(--warning);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--text-muted);
+}
+
+/* Styles specific to pieces for consistency */
+.piece-card {
+    background-color: #FFFFFF; /* Fondo blanco para las tarjetas */
+    color: var(--card-bg); /* Texto oscuro para contraste */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.piece-symbol {
+    font-size: 5rem; /* Tamaño grande para el símbolo */
+    line-height: 1;
+    margin-bottom: 10px;
+    color: var(--text-color); /* Color claro para el símbolo (blanco) */
+    text-shadow: 1px 1px 2px var(--card-bg), -1px -1px 2px var(--card-bg), 1px -1px 2px var(--card-bg), -1px 1px 2px var(--card-bg); /* Sombra oscura para el contorno */
+}
+
+.piece-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Styles for challenges */
+.challenge-card {
+    background-color: var(--card-bg); /* Fondo de la tarjeta de desafío */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: fit-content; /* Ajustar al contenido del tablero */
+}
+
+.challenge-card h2 {
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+/* Specific styles for the grid inside the challenge card */
+.challenge-card .grid-3x3 {
+    grid-template-columns: repeat(3, 50px); /* Smaller cells */
+    grid-gap: 2px; /* Smaller gap */
+    margin: 10px auto; /* Adjust margin */
+}
+
+.challenge-card .cell {
+    width: 50px; /* Match grid-template-columns */
+    height: 50px; /* Match grid-template-columns */
+    font-size: 0.7rem; /* Smaller font for cell numbers if any */
+}
+
+.challenge-card .piece-symbol {
+    font-size: 2.2rem; /* Even smaller pieces for the challenge card */
+}
+
+.challenge-card h2 {
+    color: var(--text-color);
+    font-size: 1.4rem; /* Slightly smaller title for challenge card */
+}
+
+.challenge-card {
+    margin: 0; /* Ensure no external margins interfere with flex layout */
+}
+
+/* Styles for highlighting possible moves */
+.cell.highlight-move {
+    background-color: var(--accent-color); /* Highlight with accent color */
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+/* Style for the cell containing the currently selected piece */
+.cell.selected-piece-cell {
+    border: 2px solid var(--accent-color); /* Thicker border for selected piece */
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+
+/* Navigation styles */
+.nav-links {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.nav-links a {
+    color: var(--accent-color);
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-to-doc {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-to-doc a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Styles specific to the main game page (index.html) */
+.main-game-body { /* Use a class for the body to apply specific styles */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0; /* Remove padding to eliminate the "doble fondo" effect */
+}
+
+.game-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px; /* Internal padding for content */
+    text-align: center; /* This centers h1, p, and controls */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    max-width: 900px; /* Increased to accommodate board and challenge card side-by-side */
+    width: 100%;
+    margin: 20px auto; /* Add margin for spacing on smaller screens and center */
+}
+
+.game-content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    gap: 30px; /* Space between board and challenge card */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    margin-top: 30px; /* Vertical spacing for the wrapper */
+    margin-bottom: 30px; /* Vertical spacing for the wrapper */
+}
+
+.game-container h1 {
+    margin-bottom: 20px;
+}
+
+/* Remove specific margins from game-board-area as game-content-wrapper handles spacing */
+.game-board-area {
+    margin: 0;
+}
+
+/* Controls margin is fine as is */
+
+/* Popup Styles */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegura que esté por encima de todo */
+}
+
+.popup-overlay.hidden {
+    display: none;
+}
+
+.popup-content {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 90%;
+    transform: scale(0.9); /* Pequeña animación al aparecer */
+    transition: transform 0.2s ease-out;
+}
+
+.popup-overlay:not(.hidden) .popup-content {
+    transform: scale(1);
+}
+
+.popup-content h2 {
+    color: var(--accent-color);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.popup-content p {
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+}
+
+.game-info {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.btn {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #258cdb; /* Slightly darker accent */
+}

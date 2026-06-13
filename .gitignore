@@ -1,0 +1,5 @@
+# Ignorar archivos del sistema
+.DS_Store
+
+# Ignorar archivos pesados no relacionados con el código del proyecto
+Microsoft.VisualStudio.Services.VSIXPackage

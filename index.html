@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Chess - Juego Principal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="main-game-body">
+
+    <div class="game-container">
+        <h1>Mini Chess</h1>
+        <p>¡Bienvenido al juego! Aquí es donde la magia sucede.</p>
+        <div id="move-counter" class="game-info">Movimientos: 0</div>
+
+        <div class="game-content-wrapper"> <!-- Wrapper for game board and challenge card -->
+            <div class="game-board-area">
+                <!-- Aquí se renderizará el tablero de juego principal con JavaScript -->
+                <div id="main-game-board" class="grid-3x3">
+                </div>
+            </div>
+
+            <div id="challenge-display">
+                <!-- Aquí se renderizará la tarjeta de desafío con JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup de Desafío Completado -->
+    <div id="completion-popup" class="popup-overlay hidden">
+        <div class="popup-content">
+            <h2>¡COMPLETADO!</h2>
+            <p id="completion-message">Desafío completado en X movimientos.</p>
+            <button id="next-challenge-btn" class="btn">Siguiente</button>
+        </div>
+    </div>
+    <script src="game.js" defer></script>
+</body>
+</html>
