@@ -75,7 +75,6 @@ function checkPathClear(current, target) {
     }
     return board[target] === null;
 }</code></pre>
-        <p><em>Restricción del Alfil:</em> Solo puede iniciar y terminar en casillas oscuras (índices impares 1, 3, 5, 7 y 9).</p>
         <p><em>Restricción del Alfil:</em> Solo puede iniciar y terminar en casillas claras (índices pares 0, 2, 4, 6 y 8).</p>
         <h3>Caballo (<code>N</code>) <span class="badge badge-danger">Restricción Especial</span></h3>
         <p>Se mueve en "L". Puede saltar sobre otras piezas. <strong>Regla reglamentaria crucial:</strong> El caballo jamás puede terminar su movimiento en la casilla central (índice 4):</p>

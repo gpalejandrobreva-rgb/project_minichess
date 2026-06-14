@@ -18,9 +18,8 @@
 </head>
 <body>
     <div class="back-to-doc">
-        <a href="Documentación - The Royal Study.txt">← Volver a la Documentación</a>
+        <a href="Documentacion - The Royal Study.txt">← Volver a la Documentación</a>
     </div>
-
 
     <h1>Mini Chess - Desafíos Aleatorios</h1>
 
@@ -28,34 +27,8 @@
         <!-- Los desafíos se insertarán aquí con JavaScript -->
     </div>
 
-    <script>
-        const PIECES_TO_USE = ['K', 'Q', 'R', 'B', 'N']; // Rey, Reina, Torre, Alfil, Caballo
-        const PIECE_SYMBOLS = {
-            'K': '♔',
-            'Q': '♕',
-            'R': '♖',
-            'B': '♗',
-            'N': '♘'
-        };
-
-        /**
-         * Convierte un índice 1D (0-8) a coordenadas 2D {row, col}.
-         * @param {number} index
-         * @returns {{row: number, col: number}}
-         */
-        function indexToCoords(index) {
-            return { row: Math.floor(index / 3), col: index % 3 };
-        }
-
-        /**
-         * Verifica si una celda es oscura basándose en su índice 1D.
-         * @param {number} index
-         * @returns {boolean}
-         */
-        function isDarkCellByIndex(index) {
-            const { row, col } = indexToCoords(index);
-            return (row + col) % 2 !== 0;
-        }
+    <script type="module">
+        import { generateBoardStateFromPieces, PIECE_SYMBOLS } from './chess-utils.js';
 
         /**
          * Genera el HTML para una tarjeta de desafío de ajedrez con piezas aleatorias.
@@ -63,45 +36,8 @@
          * @returns {string} El HTML de la tarjeta de desafío.
          */
         function generateRandomChallengeHTML(challengeNumber) {
-            // Modificado para asegurar que el Alfil esté en celda clara y el Caballo no en el centro
-            const boardState = Array(9).fill('.'); // '.' representa una casilla vacía
-            let currentPiecesToPlace = [...PIECES_TO_USE]; // K, Q, R, B, N
-
-            let availableCellIndices = Array.from({ length: 9 }, (_, i) => i); // Todos los índices del 0 al 8
-
-            // 1. Colocar Alfil (B) en una celda clara
-            const bishopIndexInPieces = currentPiecesToPlace.indexOf('B');
-            if (bishopIndexInPieces !== -1) {
-                currentPiecesToPlace.splice(bishopIndexInPieces, 1); // Quitar Alfil de las piezas a colocar
-
-                const currentAvailableLightCells = availableCellIndices.filter(idx => !isDarkCellByIndex(idx));
-                const randomLightCellIdx = Math.floor(Math.random() * currentAvailableLightCells.length);
-                const bishopPosition = currentAvailableLightCells[randomLightCellIdx];
-                boardState[bishopPosition] = 'B';
-                availableCellIndices = availableCellIndices.filter(idx => idx !== bishopPosition); // Eliminar la celda usada
-            }
-
-            // 2. Colocar Caballo (N) no en el centro (índice 4)
-            const knightIndexInPieces = currentPiecesToPlace.indexOf('N');
-            if (knightIndexInPieces !== -1) {
-                currentPiecesToPlace.splice(knightIndexInPieces, 1); // Quitar Caballo de las piezas a colocar
-
-                const knightAllowedCells = availableCellIndices.filter(idx => idx !== 4); // Excluir el centro
-                const randomKnightCellIdx = Math.floor(Math.random() * knightAllowedCells.length);
-                const knightPosition = knightAllowedCells[randomKnightCellIdx];
-                boardState[knightPosition] = 'N';
-                availableCellIndices = availableCellIndices.filter(idx => idx !== knightPosition); // Eliminar la celda usada
-            }
-
-            // 3. Colocar las piezas restantes (K, Q, R) en las celdas disponibles
-            const shuffledAvailableCells = availableCellIndices.sort(() => Math.random() - 0.5);
-            const piecePositions = shuffledAvailableCells.slice(0, currentPiecesToPlace.length);
-
-            const shuffledRemainingPieces = currentPiecesToPlace.sort(() => Math.random() - 0.5);
-
-            for (let i = 0; i < shuffledRemainingPieces.length; i++) {
-                boardState[piecePositions[i]] = shuffledRemainingPieces[i];
-            }
+            // Genera el estado usando la lógica centralizada en chess-utils
+            const boardState = generateBoardStateFromPieces(['K', 'Q', 'R', 'B', 'N']);
 
             let challengeHTML = `
                 <div class="challenge-card">
@@ -113,17 +49,13 @@
             for (let i = 0; i < 9; i++) {
                 const row = Math.floor(i / 3);
                 const col = i % 3;
-                // Determina si la casilla es oscura o clara para aplicar el estilo correcto
-                // (fila + columna) % 2 !== 0 para casilla oscura, === 0 para casilla clara
                 const isDarkCell = (row + col) % 2 !== 0;
                 const cellClass = isDarkCell ? 'dark-cell' : 'light-cell';
                 const pieceChar = boardState[i];
                 let pieceContent = '';
 
                 // Si hay una pieza en esta casilla, genera su símbolo con el color de contraste
-                if (pieceChar !== '.') {
-                    // Para que las piezas blancas siempre se vean blancas, usamos --text-color.
-                    // Si la casilla es clara, añadimos una sombra para asegurar el contraste.
+                if (pieceChar !== null) {
                     let pieceColorStyle = 'color: var(--text-color);'; // Color base blanco/claro
                     if (!isDarkCell) { // Si la casilla es clara, añade una sombra oscura para visibilidad
                         pieceColorStyle += ' text-shadow: 1px 1px 2px var(--card-bg), -1px -1px 2px var(--card-bg), 1px -1px 2px var(--card-bg), -1px 1px 2px var(--card-bg);';

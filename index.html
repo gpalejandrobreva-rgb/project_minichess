@@ -10,8 +10,24 @@
 
     <div class="game-container">
         <h1>Mini Chess</h1>
-        <p>¡Bienvenido al juego! Aquí es donde la magia sucede.</p>
-        <div id="move-counter" class="game-info">Movimientos: 0</div>
+        
+        <!-- U-04: Panel de instrucciones con localStorage y toggle -->
+        <div id="instruction-box" class="instruction-box">
+            <div class="instruction-header">
+                <span>¿Cómo jugar?</span>
+                <button id="toggle-instructions-btn" class="btn-icon" title="Mostrar/Ocultar instrucciones">ℹ️</button>
+            </div>
+            <p class="instruction-content">Mueve las piezas del tablero izquierdo para alcanzar la posición del tablero objetivo. Usa el menor número de movimientos posible. No hay capturas; las piezas solo se desplazan a casillas vacías. Restricción: el Caballo jamás puede terminar su movimiento en la casilla central.</p>
+        </div>
+
+        <!-- U-01 & U-02: Botones de control de juego -->
+        <div class="game-controls">
+            <div id="move-counter" class="game-info">Movimientos: 0 / Óptimo: 0</div>
+            <div class="action-buttons">
+                <button id="undo-btn" class="btn btn-secondary" disabled>← Deshacer</button>
+                <button id="reset-challenge-btn" class="btn btn-secondary">↺ Reiniciar</button>
+            </div>
+        </div>
 
         <div class="game-content-wrapper"> <!-- Wrapper for game board and challenge card -->
             <div class="game-board-area">
@@ -26,14 +42,16 @@
         </div>
     </div>
 
-    <!-- Popup de Desafío Completado -->
-    <div id="completion-popup" class="popup-overlay hidden">
+    <!-- U-03 & U-05: Popup de Desafío Completado (Controlado por opacidad/visibilidad) -->
+    <div id="completion-popup" class="popup-overlay">
         <div class="popup-content">
             <h2>¡COMPLETADO!</h2>
-            <p id="completion-message">Desafío completado en X movimientos.</p>
+            <div id="completion-stars" class="stars-display">⭐⭐⭐</div>
+            <p id="completion-message">¡Perfecto! Solución óptima.</p>
+            <p id="optimal-info" class="popup-info"></p>
             <button id="next-challenge-btn" class="btn">Siguiente</button>
         </div>
     </div>
-    <script src="game.js" defer></script>
+    <script src="game.js" type="module" defer></script>
 </body>
 </html>
