@@ -534,6 +534,12 @@ pre code {
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    .game-board-area {
+        order: 2; /* Tablero de juego abajo para comodidad táctil */
+    }
+    #challenge-display {
+        order: 1; /* Desafío objetivo arriba */
+    }
     .instruction-box {
         width: 100%;
         padding: 12px 15px;
