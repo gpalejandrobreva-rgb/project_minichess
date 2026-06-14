@@ -186,6 +186,57 @@ pre code {
     text-shadow: 1px 1px 2px var(--card-bg), -1px -1px 2px var(--card-bg), 1px -1px 2px var(--card-bg), -1px 1px 2px var(--card-bg); /* Sombra oscura para el contorno */
 }
 
+/* Estilo premium de Fichas/Tokens para las piezas dentro del tablero */
+.cell .piece-symbol {
+    width: 78%;
+    height: 78%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: min(2.8rem, 8vw);
+    line-height: 1;
+    margin-bottom: 0; /* Sin margen inferior en las fichas */
+    
+    /* Modo Oscuro (Por defecto) */
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 
+                0 0 8px rgba(56, 189, 248, 0.25), 
+                inset 0 2px 3px rgba(255, 255, 255, 0.1),
+                inset 0 -2px 3px rgba(0, 0, 0, 0.4);
+    transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s, transform 0.25s;
+    cursor: grab;
+}
+
+.cell .piece-symbol:active {
+    cursor: grabbing;
+}
+
+/* Animación y efecto al arrastrar/hover */
+.cell .piece-symbol[draggable="true"]:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 
+                0 0 12px rgba(56, 189, 248, 0.4), 
+                inset 0 2px 3px rgba(255, 255, 255, 0.15);
+}
+
+/* Modo Claro */
+.light-theme .cell .piece-symbol {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    border: 2px solid #0284c7;
+    color: #0284c7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 
+                inset 0 2px 3px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 3px rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .cell .piece-symbol[draggable="true"]:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 
+                inset 0 2px 3px rgba(255, 255, 255, 0.8);
+}
+
 .piece-name {
     font-size: 1.5rem;
     font-weight: bold;
@@ -224,8 +275,10 @@ pre code {
     font-size: 0.7rem; /* Smaller font for cell numbers if any */
 }
 
-.challenge-card .piece-symbol {
-    font-size: 2.2rem !important; /* Even smaller pieces for the challenge card */
+.challenge-card .cell .piece-symbol {
+    font-size: 1.5rem !important; /* Adaptar al círculo pequeño */
+    border-width: 1px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }
 
 .challenge-card h2 {

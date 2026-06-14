@@ -46,13 +46,8 @@ function renderBoard(boardState, targetElementId, isDraggable) {
 
         const pieceChar = boardState[i];
         if (pieceChar !== null) {
-            let pieceColorStyle = 'color: var(--text-color);';
-            if (!isDarkCell) {
-                pieceColorStyle += ' text-shadow: 1px 1px 2px var(--card-bg), -1px -1px 2px var(--card-bg), 1px -1px 2px var(--card-bg), -1px 1px 2px var(--card-bg);';
-            }
             const pieceSpan = document.createElement('span');
             pieceSpan.className = 'piece-symbol';
-            pieceSpan.style = pieceColorStyle;
             pieceSpan.textContent = PIECE_SYMBOLS[pieceChar];
             pieceSpan.dataset.piece = pieceChar; // Almacenar el tipo de pieza
             pieceSpan.dataset.index = i; // Almacenar el índice de la pieza para manejo de clics
