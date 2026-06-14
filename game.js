@@ -413,6 +413,38 @@ function hideCompletionPopup() {
     }
 }
 
+/**
+ * Configura el modo claro/oscuro (tema) y lo guarda en localStorage.
+ */
+function setupTheme() {
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    if (!themeToggleBtn) return;
+
+    // Obtener tema guardado (oscuro por defecto)
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        themeToggleBtn.textContent = '☀️';
+    } else {
+        document.body.classList.remove('light-theme');
+        themeToggleBtn.textContent = '🌙';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        const isLightTheme = document.body.classList.contains('light-theme');
+
+        if (isLightTheme) {
+            themeToggleBtn.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        } else {
+            themeToggleBtn.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+}
+
 // --- Inicialización del Juego ---
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -460,4 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cargar lógica de instrucciones
     setupInstructions();
+
+    // Configurar modo claro/oscuro
+    setupTheme();
 });

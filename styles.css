@@ -1,13 +1,35 @@
 :root {
     --bg-color: #0f172a;
-    --card-bg: #1e293b; /* Color oscuro para casillas oscuras y texto oscuro */
+    --card-bg: #1e293b;
     --accent-color: #38bdf8;
-    --text-color: #f1f5f9; /* Color claro para casillas claras y texto claro */
+    --text-color: #f1f5f9;
     --text-muted: #94a3b8;
     --border-color: #334155;
     --code-bg: #0b0f19;
     --success: #10b981;
     --warning: #f59e0b;
+
+    /* Variables de casillas para Modo Oscuro */
+    --cell-dark-bg: #1e293b;
+    --cell-dark-text: #f1f5f9;
+    --cell-light-bg: #f1f5f9;
+    --cell-light-text: #1e293b;
+}
+
+/* Variables para Modo Claro */
+.light-theme {
+    --bg-color: #f8fafc; /* slate-50 */
+    --card-bg: #ffffff;
+    --text-color: #0f172a; /* slate-900 */
+    --text-muted: #64748b; /* slate-500 */
+    --border-color: #e2e8f0; /* slate-200 */
+    --code-bg: #f1f5f9; /* slate-100 */
+
+    /* Variables de casillas para Modo Claro */
+    --cell-dark-bg: #cbd5e1; /* slate-300 */
+    --cell-dark-text: #0f172a;
+    --cell-light-bg: #ffffff;
+    --cell-light-text: #0f172a;
 }
 
 body {
@@ -101,13 +123,13 @@ pre code {
 }
 
 .dark-cell {
-    background-color: var(--card-bg); /* Oscuro: #1e293b */
-    color: var(--text-color); /* Texto claro para contraste */
+    background-color: var(--cell-dark-bg);
+    color: var(--cell-dark-text);
 }
 
 .light-cell {
-    background-color: var(--text-color); /* Claro: #f1f5f9 */
-    color: var(--card-bg); /* Texto oscuro para contraste */
+    background-color: var(--cell-light-bg);
+    color: var(--cell-light-text);
 }
 
 .badge {
@@ -462,4 +484,40 @@ pre code {
     color: var(--accent-color);
     padding: 0;
     line-height: 1;
+}
+
+/* Botón de cambio de tema (Minimalista y flotante) */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: background-color 0.25s, border-color 0.25s, transform 0.25s;
+    z-index: 100;
+}
+
+.theme-toggle:hover {
+    background-color: var(--border-color);
+    transform: scale(1.05);
+}
+
+/* Ajustes responsivos para posicionamiento del botón */
+@media (max-width: 600px) {
+    .theme-toggle {
+        top: 10px;
+        right: 10px;
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
 }
