@@ -186,28 +186,32 @@ pre code {
     text-shadow: 1px 1px 2px var(--card-bg), -1px -1px 2px var(--card-bg), 1px -1px 2px var(--card-bg), -1px 1px 2px var(--card-bg); /* Sombra oscura para el contorno */
 }
 
-/* Estilo premium de Fichas/Tokens para las piezas dentro del tablero */
+/* Estilo clásico y elegante para las piezas dentro del tablero */
 .cell .piece-symbol {
-    width: 78%;
-    height: 78%;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: min(2.8rem, 8vw);
+    font-size: min(4.2rem, 11vw);
+    font-family: "Georgia", "Times New Roman", serif;
     line-height: 1;
-    margin-bottom: 0; /* Sin margen inferior en las fichas */
-    
-    /* Modo Oscuro (Por defecto) */
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border: 2px solid var(--accent-color);
-    color: var(--accent-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 
-                0 0 8px rgba(56, 189, 248, 0.25), 
-                inset 0 2px 3px rgba(255, 255, 255, 0.1),
-                inset 0 -2px 3px rgba(0, 0, 0, 0.4);
-    transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s, transform 0.25s;
+    margin-bottom: 0;
     cursor: grab;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    
+    /* Color marfil pulido clásico */
+    color: #fdfaf2;
+    /* Sombra para contorno y profundidad clásica */
+    text-shadow: 1px 1px 0px #090d16, 
+                 -1px -1px 0px #090d16, 
+                 1px -1px 0px #090d16, 
+                 -1px 1px 0px #090d16, 
+                 0 3px 6px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s ease, text-shadow 0.2s ease;
 }
 
 .cell .piece-symbol:active {
@@ -216,25 +220,30 @@ pre code {
 
 /* Animación y efecto al arrastrar/hover */
 .cell .piece-symbol[draggable="true"]:hover {
-    transform: scale(1.08) translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 
-                0 0 12px rgba(56, 189, 248, 0.4), 
-                inset 0 2px 3px rgba(255, 255, 255, 0.15);
+    transform: scale(1.12) translateY(-4px);
+    text-shadow: 1px 1px 0px #090d16, 
+                 -1px -1px 0px #090d16, 
+                 1px -1px 0px #090d16, 
+                 -1px 1px 0px #090d16, 
+                 0 8px 12px rgba(0, 0, 0, 0.7);
 }
 
 /* Modo Claro */
 .light-theme .cell .piece-symbol {
-    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-    border: 2px solid #0284c7;
-    color: #0284c7;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 
-                inset 0 2px 3px rgba(255, 255, 255, 0.8),
-                inset 0 -2px 3px rgba(0, 0, 0, 0.05);
+    color: #fdfaf2; /* Se mantiene como piezas blancas clásicas */
+    text-shadow: 1px 1px 0px #0f172a, 
+                 -1px -1px 0px #0f172a, 
+                 1px -1px 0px #0f172a, 
+                 -1px 1px 0px #0f172a, 
+                 0 3px 6px rgba(15, 23, 42, 0.35);
 }
 
 .light-theme .cell .piece-symbol[draggable="true"]:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 
-                inset 0 2px 3px rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 0px #0f172a, 
+                 -1px -1px 0px #0f172a, 
+                 1px -1px 0px #0f172a, 
+                 -1px 1px 0px #0f172a, 
+                 0 8px 12px rgba(15, 23, 42, 0.45);
 }
 
 .piece-name {

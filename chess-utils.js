@@ -1,11 +1,11 @@
 // chess-utils.js
 
 export const PIECE_SYMBOLS = {
-    'K': '♔', // Rey
-    'Q': '♕', // Dama
-    'R': '♖', // Torre
-    'B': '♗', // Alfil
-    'N': '♘'  // Caballo
+    'K': '♚', // Rey
+    'Q': '♛', // Dama
+    'R': '♜', // Torre
+    'B': '♝', // Alfil
+    'N': '♞'  // Caballo
 };
 
 export const PIECES_TO_USE = ['K', 'Q', 'R', 'B', 'N'];
